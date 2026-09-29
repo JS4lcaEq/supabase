@@ -29,3 +29,6 @@ obj/
 *.bak
 *.log
 
+
+# local REST page, contains the anon key
+/rest/
