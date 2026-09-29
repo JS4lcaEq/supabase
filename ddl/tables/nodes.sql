@@ -5,3 +5,7 @@ CREATE TABLE public.nodes (
 );
 
 ALTER TABLE public.nodes ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY nodes_anon_select ON public.nodes
+  FOR SELECT TO anon
+  USING (true);

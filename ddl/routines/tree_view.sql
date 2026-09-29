@@ -118,3 +118,6 @@ $comment$
 run: SELECT * FROM public.tree_view(p_root_id => null, p_mask => 'Node_1', p_from => 1, p_to => 50);
 Страница путей к узлам, имя которых содержит маску.
 $comment$;
+
+GRANT EXECUTE ON FUNCTION public.tree_view(bigint, bigint, bigint) TO anon;
+GRANT EXECUTE ON FUNCTION public.tree_view(bigint, character varying, bigint, bigint) TO anon;
