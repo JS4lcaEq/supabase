@@ -7,3 +7,5 @@ CREATE TABLE public.edges (
 );
 
 ALTER TABLE public.edges ENABLE ROW LEVEL SECURITY;
+
+CREATE INDEX edges_cid_idx ON public.edges (cid);
