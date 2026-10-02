@@ -99,6 +99,12 @@ BEGIN
   DELETE FROM public.nodes n
   WHERE n.id = ANY (v_desc);
 
+  PERFORM setval(
+    pg_get_serial_sequence('public.nodes', 'id'),
+    COALESCE((SELECT max(id) FROM public.nodes), 0) + 1,
+    false
+  );
+
   v_parents := ARRAY[p_start];
 
   FOR v_lvl IN 2..p_deep LOOP
