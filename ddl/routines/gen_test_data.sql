@@ -50,3 +50,85 @@ WRITE
 run: CALL gen_test_data(p_deep => 3, p_length => 3);
 Строит дерево узлов и рёбер и заменяет текущие данные.
 $comment$;
+
+CREATE OR REPLACE PROCEDURE public.gen_test_data(IN p_deep integer, IN p_length integer, IN p_start bigint)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $procedure$
+DECLARE
+  v_lvl integer;
+  v_desc bigint[];
+  v_parents bigint[];
+  v_next bigint[];
+  v_parent bigint;
+  v_child bigint;
+  v_i integer;
+BEGIN
+  IF p_deep IS NULL OR p_length IS NULL THEN
+    RAISE EXCEPTION 'p_deep and p_length must be not null'
+      USING ERRCODE = '22023';
+  END IF;
+  IF p_deep < 1 OR p_length < 1 THEN
+    RAISE EXCEPTION 'p_deep (%) and p_length (%) must be >= 1', p_deep, p_length
+      USING ERRCODE = '22023';
+  END IF;
+  IF p_start IS NULL THEN
+    RAISE EXCEPTION 'p_start must be not null'
+      USING ERRCODE = '22023';
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM public.nodes n WHERE n.id = p_start) THEN
+    RAISE EXCEPTION 'p_start (%) not found', p_start
+      USING ERRCODE = '22023';
+  END IF;
+
+  WITH RECURSIVE tree AS (
+    SELECT e.cid AS node_id, ARRAY[p_start, e.cid] AS id_path
+    FROM public.edges e
+    WHERE e.pid = p_start
+    UNION ALL
+    SELECT e.cid, t.id_path || e.cid
+    FROM tree t
+    JOIN public.edges e ON e.pid = t.node_id
+    WHERE NOT (e.cid = ANY (t.id_path))
+  )
+  SELECT COALESCE(array_agg(DISTINCT t.node_id), ARRAY[]::bigint[])
+  INTO v_desc
+  FROM tree t;
+
+  DELETE FROM public.nodes n
+  WHERE n.id = ANY (v_desc);
+
+  v_parents := ARRAY[p_start];
+
+  FOR v_lvl IN 2..p_deep LOOP
+    v_next := ARRAY[]::bigint[];
+    FOREACH v_parent IN ARRAY v_parents LOOP
+      FOR v_i IN 1..p_length LOOP
+        INSERT INTO public.nodes (nm)
+        VALUES ('')
+        RETURNING id INTO v_child;
+
+        UPDATE public.nodes
+        SET nm = 'Node_' || lpad(v_child::text, 6, '0')
+        WHERE id = v_child;
+
+        INSERT INTO public.edges (pid, cid)
+        VALUES (v_parent, v_child);
+
+        v_next := v_next || v_child;
+      END LOOP;
+    END LOOP;
+    v_parents := v_next;
+  END LOOP;
+END;
+$procedure$;
+
+COMMENT ON PROCEDURE public.gen_test_data(integer, integer, bigint) IS
+$comment$
+WRITE
+run: CALL public.gen_test_data(p_deep => 2, p_length => 2, p_start => 1);
+Снимает потомков узла и строит от него дерево; данные выше этого узла не трогает.
+$comment$;
+
+GRANT EXECUTE ON PROCEDURE public.gen_test_data(integer, integer, bigint) TO anon;
