@@ -58,7 +58,6 @@ SET search_path = public
 AS $procedure$
 DECLARE
   v_lvl integer;
-  v_desc bigint[];
   v_parents bigint[];
   v_next bigint[];
   v_parent bigint;
@@ -92,12 +91,9 @@ BEGIN
     JOIN public.edges e ON e.pid = t.node_id
     WHERE NOT (e.cid = ANY (t.id_path))
   )
-  SELECT COALESCE(array_agg(DISTINCT t.node_id), ARRAY[]::bigint[])
-  INTO v_desc
-  FROM tree t;
-
   DELETE FROM public.nodes n
-  WHERE n.id = ANY (v_desc);
+  USING (SELECT DISTINCT node_id FROM tree) d
+  WHERE n.id = d.node_id;
 
   PERFORM setval(
     pg_get_serial_sequence('public.nodes', 'id'),
