@@ -128,7 +128,7 @@ COMMENT ON PROCEDURE public.gen_test_data(integer, integer, bigint) IS
 $comment$
 WRITE
 run: CALL public.gen_test_data(p_deep => 2, p_length => 2, p_start => 1);
-Снимает потомков узла и строит от него дерево; данные выше этого узла не трогает.
+Чистит всех потомков узла p_start и строит от него новое поддерево; старые данные ближе к корню от этого узла не трогает.
 $comment$;
 
 GRANT EXECUTE ON PROCEDURE public.gen_test_data(integer, integer, bigint) TO anon;
