@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.node_all()
+CREATE OR REPLACE FUNCTION public.api_node_all()
 RETURNS TABLE(id bigint, nm character varying)
 LANGUAGE sql
 STABLE
@@ -11,10 +11,10 @@ ORDER BY id
 LIMIT 100000;
 $function$;
 
-COMMENT ON FUNCTION public.node_all() IS
+COMMENT ON FUNCTION public.api_node_all() IS
 $comment$
-run: SELECT * FROM public.node_all();
+run: SELECT * FROM public.api_node_all();
 Узлы по id, не больше 100000.
 $comment$;
 
-GRANT EXECUTE ON FUNCTION public.node_all() TO anon;
+GRANT EXECUTE ON FUNCTION public.api_node_all() TO anon;

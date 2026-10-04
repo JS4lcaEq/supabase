@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.node_list(p_pid bigint)
+CREATE OR REPLACE FUNCTION public.api_node_list(p_pid bigint)
 RETURNS TABLE(id bigint, nm character varying)
 LANGUAGE plpgsql
 STABLE
@@ -24,10 +24,10 @@ BEGIN
 END;
 $function$;
 
-COMMENT ON FUNCTION public.node_list(bigint) IS
+COMMENT ON FUNCTION public.api_node_list(bigint) IS
 $comment$
-run: SELECT * FROM public.node_list(p_pid => NULL);
+run: SELECT * FROM public.api_node_list(p_pid => NULL);
 Прямые дети узла по pid; если pid равен null, корни.
 $comment$;
 
-GRANT EXECUTE ON FUNCTION public.node_list(bigint) TO anon;
+GRANT EXECUTE ON FUNCTION public.api_node_list(bigint) TO anon;

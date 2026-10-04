@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.edge_list(p_pid bigint)
+CREATE OR REPLACE FUNCTION public.api_edge_list(p_pid bigint)
 RETURNS TABLE(pid bigint, cid bigint)
 LANGUAGE plpgsql
 STABLE
@@ -18,10 +18,10 @@ BEGIN
 END;
 $function$;
 
-COMMENT ON FUNCTION public.edge_list(bigint) IS
+COMMENT ON FUNCTION public.api_edge_list(bigint) IS
 $comment$
-run: SELECT * FROM public.edge_list(p_pid => 1);
+run: SELECT * FROM public.api_edge_list(p_pid => 1);
 Прямые рёбра узла по pid.
 $comment$;
 
-GRANT EXECUTE ON FUNCTION public.edge_list(bigint) TO anon;
+GRANT EXECUTE ON FUNCTION public.api_edge_list(bigint) TO anon;

@@ -24,19 +24,19 @@ Postgres-схема в Supabase: дерево узлов и рёбер, выбо
 
 У `anon` есть `EXECUTE`. Для `gen_test_data(p_deep, p_length)` в `ddl` нет `GRANT`.
 
-`node_list(p_pid)` — прямые дети узла по `pid`; если `pid` равен null, корни.
+`api_node_list(p_pid)` — прямые дети узла по `pid`; если `pid` равен null, корни.
 `node_get(p_id)` — один узел по `id`.
 `node_save(p_id, p_nm)` — вставляет узел, если `id` равен null, иначе меняет имя. WRITE
 `node_delete(p_id)` — удаляет узел по `id`; рёбра уходят каскадом, дети остаются. WRITE
 `node_find(p_mask)` — узлы, в имени которых есть образец; не больше 50, по `id`.
-`node_all()` — узлы по `id`, не больше 100000.
+`api_node_all()` — узлы по `id`, не больше 100000.
 
-`edge_list(p_pid)` — прямые рёбра узла по `pid`.
+`api_edge_list(p_pid)` — прямые рёбра узла по `pid`.
 `edge_get(p_pid, p_cid)` — одно ребро по `pid` и `cid`.
 `edge_add(p_pid, p_cid)` — добавляет ребро pid-cid; повтор и null запрещены. WRITE
 `edge_delete(p_pid, p_cid)` — удаляет ребро по `pid` и `cid`; узлы не трогает. WRITE
 `edge_delete_end(p_id)` — удаляет рёбра, где узел стоит как `pid` или `cid`. WRITE
-`edge_all()` — рёбра по `pid` и `cid`, не больше 100000.
+`api_edge_all()` — рёбра по `pid` и `cid`, не больше 100000.
 
 `db_ping()` — текущее время базы в секундах, тип `integer`: unix-секунды, без сдвига часового пояса.
 
