@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.edge_delete(p_pid bigint, p_cid bigint)
+CREATE OR REPLACE FUNCTION public.api_edge_delete(p_pid bigint, p_cid bigint)
 RETURNS void
 LANGUAGE plpgsql
 VOLATILE
@@ -23,11 +23,11 @@ BEGIN
 END;
 $function$;
 
-COMMENT ON FUNCTION public.edge_delete(bigint, bigint) IS
+COMMENT ON FUNCTION public.api_edge_delete(bigint, bigint) IS
 $comment$
 WRITE
-run: SELECT public.edge_delete(p_pid => 1, p_cid => 2);
+run: SELECT public.api_edge_delete(p_pid => 1, p_cid => 2);
 Удаляет ребро по pid и cid; узлы не трогает.
 $comment$;
 
-GRANT EXECUTE ON FUNCTION public.edge_delete(bigint, bigint) TO anon;
+GRANT EXECUTE ON FUNCTION public.api_edge_delete(bigint, bigint) TO anon;

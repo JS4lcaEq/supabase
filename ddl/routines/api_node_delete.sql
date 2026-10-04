@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.node_delete(p_id bigint)
+CREATE OR REPLACE FUNCTION public.api_node_delete(p_id bigint)
 RETURNS void
 LANGUAGE plpgsql
 VOLATILE
@@ -18,11 +18,11 @@ BEGIN
 END;
 $function$;
 
-COMMENT ON FUNCTION public.node_delete(bigint) IS
+COMMENT ON FUNCTION public.api_node_delete(bigint) IS
 $comment$
 WRITE
-run: SELECT public.node_delete(p_id => 1);
+run: SELECT public.api_node_delete(p_id => 1);
 Удаляет узел по id; рёбра уходят каскадом, дети остаются.
 $comment$;
 
-GRANT EXECUTE ON FUNCTION public.node_delete(bigint) TO anon;
+GRANT EXECUTE ON FUNCTION public.api_node_delete(bigint) TO anon;

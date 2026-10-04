@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.node_save(p_id bigint, p_nm character varying)
+CREATE OR REPLACE FUNCTION public.api_node_save(p_id bigint, p_nm character varying)
 RETURNS TABLE(id bigint, nm character varying)
 LANGUAGE plpgsql
 VOLATILE
@@ -30,11 +30,11 @@ BEGIN
 END;
 $function$;
 
-COMMENT ON FUNCTION public.node_save(bigint, character varying) IS
+COMMENT ON FUNCTION public.api_node_save(bigint, character varying) IS
 $comment$
 WRITE
-run: SELECT * FROM public.node_save(p_id => NULL, p_nm => 'Node');
+run: SELECT * FROM public.api_node_save(p_id => NULL, p_nm => 'Node');
 Вставляет узел, если id равен null, иначе меняет имя.
 $comment$;
 
-GRANT EXECUTE ON FUNCTION public.node_save(bigint, character varying) TO anon;
+GRANT EXECUTE ON FUNCTION public.api_node_save(bigint, character varying) TO anon;

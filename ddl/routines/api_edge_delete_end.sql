@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.edge_delete_end(p_id bigint)
+CREATE OR REPLACE FUNCTION public.api_edge_delete_end(p_id bigint)
 RETURNS void
 LANGUAGE plpgsql
 VOLATILE
@@ -16,11 +16,11 @@ BEGIN
 END;
 $function$;
 
-COMMENT ON FUNCTION public.edge_delete_end(bigint) IS
+COMMENT ON FUNCTION public.api_edge_delete_end(bigint) IS
 $comment$
 WRITE
-run: SELECT public.edge_delete_end(p_id => 1);
+run: SELECT public.api_edge_delete_end(p_id => 1);
 Удаляет рёбра, где узел стоит как pid или cid.
 $comment$;
 
-GRANT EXECUTE ON FUNCTION public.edge_delete_end(bigint) TO anon;
+GRANT EXECUTE ON FUNCTION public.api_edge_delete_end(bigint) TO anon;

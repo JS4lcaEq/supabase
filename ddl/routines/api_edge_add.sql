@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION public.edge_add(p_pid bigint, p_cid bigint)
+CREATE OR REPLACE FUNCTION public.api_edge_add(p_pid bigint, p_cid bigint)
 RETURNS TABLE(pid bigint, cid bigint)
 LANGUAGE plpgsql
 VOLATILE
@@ -34,11 +34,11 @@ BEGIN
 END;
 $function$;
 
-COMMENT ON FUNCTION public.edge_add(bigint, bigint) IS
+COMMENT ON FUNCTION public.api_edge_add(bigint, bigint) IS
 $comment$
 WRITE
-run: SELECT * FROM public.edge_add(p_pid => 1, p_cid => 2);
+run: SELECT * FROM public.api_edge_add(p_pid => 1, p_cid => 2);
 Добавляет ребро pid-cid; повтор и null запрещены.
 $comment$;
 
-GRANT EXECUTE ON FUNCTION public.edge_add(bigint, bigint) TO anon;
+GRANT EXECUTE ON FUNCTION public.api_edge_add(bigint, bigint) TO anon;
